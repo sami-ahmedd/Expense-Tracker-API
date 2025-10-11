@@ -1,8 +1,12 @@
 const express  = require('express');
-const dotenv =require('dotenv').config();
+require('dotenv').config();
 const mongoose = require('mongoose');
+const expensesRouter = require('./routes/expenses')
 
 const app = express();
+
+app.use(express.json());
+app.use(expensesRouter);
 
 mongoose.connect(process.env.MONGO_URI )
     .then(() => console.log('connected to database'))
