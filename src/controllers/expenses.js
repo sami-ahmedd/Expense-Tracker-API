@@ -1,7 +1,11 @@
+const { body } = require('express-validator');
+const {expenseModel} = require('../models/expenseModel')
 //@desc create new expense
 //@route POST /api/expenses
-const createExpense = (request,response) => {
-    response.send({message : 'create expense'})
+const createExpense = async (request,response) => {
+    const {body} = request
+    const expense = await expenseModel.create(body);
+    response.status(201).send({expense})
 }
 
 //@desc get all expenses
