@@ -27,8 +27,15 @@ const getAllExpenses = async (request,response) => {
 //@route PATCH /api/expenses/:id
 const updateExpense = async (request,response) => {
     const {body , params : {id}} = request;
-    const findExpense = await expenseModel.findByIdAndUpdate(id,body)
-    response.status(200).send({findExpense})
+    try {
+        const findExpense = await expenseModel.findByIdAndUpdate(id,body)
+        if(!findExpense){
+            return response.status(404).send({msg: `no task with id ${id}`})
+        }
+        response.status(200).send({findExpense})
+    } catch (error) {
+        response.status(500).send({msg: error})
+    }
 
 }
 
