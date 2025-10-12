@@ -1,22 +1,13 @@
 const express = require('express')
 const router = express.Router();
+const {getAllExpenses,updateExpense,createExpense, deleteExpense} = require('../controllers/expenses')
 
-router.post('/api/expenses' , (request,response) => {
-    response.send({message : 'create expense'})
-})
+router.post('/api/expenses' , createExpense)
 
-router.get('/api/expenses' , (request,response) => {
-    response.send('all the expenses youve made');
-})
+router.get('/api/expenses' ,getAllExpenses )
 
-router.patch('/api/expenses/:id' , (request,response) => {
-    const {body , params : {id}} = request;
-    response.send({message : `updating expense with id : ${id}`})
-})
+router.patch('/api/expenses/:id' , updateExpense)
 
-router.delete('/api/expenses/:id' , (request,response) => {
-    const {params : {id}} = request;
-    response.send({message : `deleting expense with id : ${id}`});
-})
+router.delete('/api/expenses/:id' , deleteExpense)
 
 module.exports = router
