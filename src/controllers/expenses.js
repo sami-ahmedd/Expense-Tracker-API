@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body , query , param , validationResult} = require('express-validator');
 const {expenseModel} = require('../models/expenseModel')
 //@desc create new expense
 //@route POST /api/expenses
