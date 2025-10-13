@@ -14,12 +14,49 @@ const createExpense = async (request,response) => {
 
 //@desc get all expenses
 //@route GET /api/expenses
-const getAllExpenses = async (request,response) => {
+const getExpenses = async (request,response) => {
     try {
+        const {query : {filter}} = request ;
+        if(!filter){
         const allExpenses = await expenseModel.find()
-        response.status(200).send({allExpenses})
+        return response.status(200).send({allExpenses})
+        }
+    
+    let startDate;
+    const today = new Date();
+
+    switch (filter) {
+    case "last-week":
+        startDate = new Date();
+        startDate.setDate(today.getDate() - 7);
+        break;
+
+    case "last-month":
+        startDate = new Date();
+        startDate.setDate(today.getDate() - 30);
+        break;
+
+    case "last-3-months":
+        startDate = new Date();
+        startDate.setDate(today.getDate() - 90);
+        break;
+
+    default:
+        startDate = null;
+        break;
+    }
+    if (!startDate) {
+        return response.status(400).send({ msg: "Invalid filter" });
+    }
+
+    if (startDate) {
+    const expenses = await expenseModel.find({
+        date: { $gte: startDate },
+    });
+    return response.status(200).send(expenses);
+    }
     } catch (error) {
-         response.status(500).send({msg : error})
+         response.status(500).send({msg : error.message})
     }
 };
 
@@ -54,4 +91,4 @@ const deleteExpense =  async (request,response) => {
     }
 }
 
-module.exports = {getAllExpenses , updateExpense , createExpense , deleteExpense};
+module.exports = {getExpenses , updateExpense , createExpense , deleteExpense};

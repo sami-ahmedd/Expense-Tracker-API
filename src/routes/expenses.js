@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router();
-const {getAllExpenses,updateExpense,createExpense, deleteExpense} = require('../controllers/expenses')
+const {getExpenses,updateExpense,createExpense, deleteExpense} = require('../controllers/expenses')
 
 router.post('/api/expenses' , createExpense)
 
-router.get('/api/expenses' ,getAllExpenses )
+router.get('/api/expenses' ,getExpenses )
 
 router.patch('/api/expenses/:id' , updateExpense)
 
