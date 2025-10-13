@@ -1,9 +1,13 @@
 const { body , query , param , validationResult} = require('express-validator');
 const {expenseModel} = require('../models/expenseModel')
+const {validateCreateExpense} = require('../utils/validators')
+
 //@desc create new expense
 //@route POST /api/expenses
 const createExpense = async (request,response) => {
-    
+    const errors = validationResult(request)
+    if (!errors.isEmpty())
+        return response.status(400).send({msg :errors.array()[0].msg})
     try {
         const expense = await expenseModel.create(request.body);
         response.status(200).send({expense})
@@ -15,6 +19,7 @@ const createExpense = async (request,response) => {
 //@desc get all expenses
 //@route GET /api/expenses
 const getExpenses = async (request,response) => {
+
     try {
         const {query : {filter}} = request ;
         if(!filter){
@@ -64,6 +69,9 @@ const getExpenses = async (request,response) => {
 //@route PATCH /api/expenses/:id
 const updateExpense = async (request,response) => {
     const {body , params : {id}} = request;
+    const errors = validationResult(request)
+    if (!errors.isEmpty())
+        return response.status(400).send({msg :errors.array()[0].msg})
     try {
         const findExpense = await expenseModel.findByIdAndUpdate(id,body)
         if(!findExpense){
