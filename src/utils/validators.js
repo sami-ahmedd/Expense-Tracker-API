@@ -17,7 +17,7 @@ const validateCreateExpense = [
 
 const validateSignup = [
     body('username')
-        .isLength({min : 4 , max : 20}).withMessage('must be between 4-20 characters')
+        .isLength({min : 4 , max : 20}).withMessage('username must be between 4-20 characters')
         .trim()
         .notEmpty().withMessage('usernamename cannot be blank')
         .isString().withMessage('username name must be a string') ,
@@ -37,4 +37,27 @@ const validateSignup = [
         .isEmail().withMessage('please enter valid email adress')
 ]
 
-module.exports = {validateCreateExpense , validateSignup }
+const validateLogin = [
+    body('username')
+        .trim()
+        .escape()
+        .notEmpty()
+        .withMessage('Username is required')
+        .isLength({ min: 3 })
+        .withMessage('Username must be minimum 3 letters long'),
+
+    body('password')
+        .trim()
+        .notEmpty()
+        .withMessage('Password is required')
+];
+
+const validate = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ msg: errors.array()[0].msg });
+  }
+  next();
+};
+
+module.exports = {validateCreateExpense , validateSignup , validateLogin , validate }
