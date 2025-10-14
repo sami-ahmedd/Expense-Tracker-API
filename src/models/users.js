@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.schemas
-let userSchema = mongoose.Schema({
+let userSchema = new mongoose.Schema({
     username : {
         type : String ,
         required  : [true, 'must provide username']  ,
@@ -17,4 +17,4 @@ let userSchema = mongoose.Schema({
 })
 
 let userModel = mongoose.model('userModel' , userSchema );
-module.expors = {userModel}
+module.exports = userModel

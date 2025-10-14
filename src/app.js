@@ -2,7 +2,10 @@ const express  = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const expensesRouter = require('./routes/expenses')
-const session = require('express-session')
+const userRouter  = require('./routes/users')
+const session = require('express-session');
+const passport = require('passport');
+require('./utils/local-strategy')
 const app = express();
 
 app.use(express.json());
@@ -17,9 +20,11 @@ app.use(session({
     }
 }));
 
-app.use()
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(expensesRouter);
+app.use(userRouter)
 
 
 const port = process.env.PORT || 3000;
