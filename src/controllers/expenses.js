@@ -1,6 +1,6 @@
-const { body , query , param , validationResult} = require('express-validator');
+const {  validationResult} = require('express-validator');
 const {expenseModel} = require('../models/expenseModel')
-const {validateCreateExpense} = require('../utils/validators')
+
 
 //@desc create new expense
 //@route POST /api/expenses
