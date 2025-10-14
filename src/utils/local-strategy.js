@@ -1,6 +1,7 @@
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const userModel = require('../models/users');
+const {comparePassword} = require('./helpers')
 
 passport.serializeUser((user , done) =>{
     done(null,user.id)
@@ -22,7 +23,7 @@ passport.use(
     try {
         const findUser = await userModel.findOne({username})
         if (!findUser) throw new Error('user not found');
-        if(findUser.password != password ) throw new Error('invalid credentials');
+        if(!comparePassword(password , findUser.password) ) throw new Error('invalid credentials');
         done(null,findUser)
     } catch (error) {
         done (error , null)
