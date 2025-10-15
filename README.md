@@ -76,21 +76,21 @@ Expense-Tracker-API/
 
 ### **Expenses**
 
-| Method | Endpoint | Description | Auth | Request Body | Response |
-|--------|-----------|--------------|------|---------------|-----------|
-| `POST` | `/api/expenses` | Create a new expense | ✅ | `{ expenseName, amount, category, date }` | `{ expense: {...} }` |
-| `GET` | `/api/expenses` | Get all expenses or filtered by date | ✅ | `?filter=last-week` / `last-month` / `last-3-months` | `{ allExpenses: [...] }` |
-| `PUT` | `/api/expenses/:id` | Update an expense | ✅ | Partial expense object | `{ expense: {...} }` |
-| `DELETE` | `/api/expenses/:id` | Delete an expense | ✅ | — | `{ msg: "Deleted successfully" }` |
+| Method | Endpoint | Description | Request Body | Response |
+|--------|-----------|--------------|---------------|-----------|
+| `POST` | `/api/expenses` | Create a new expense | `{ expenseName, amount, category, date }` | `{ expense: {...} }` |
+| `GET` | `/api/expenses` | Get all expenses or filtered by date | `?filter=last-week` / `last-month` / `last-3-months` | `{ allExpenses: [...] }` |
+| `PUT` | `/api/expenses/:id` | Update an expense | Partial expense object | `{ expense: {...} }` |
+| `DELETE` | `/api/expenses/:id` | Delete an expense | — | `{ msg: "Deleted successfully" }` |
 
 ### **Users**
 
-| Method | Endpoint | Description | Auth | Request Body | Response |
-|--------|-----------|-------------|------|---------------|-----------|
-| `POST` | `/api/users/register` | Register a new user | ❌ | `{ name, email, password }` | `{ user }` |
-| `POST` | `/api/users/login` | Login with email and password | ❌ | `{ email, password }` | `{ msg: "Login successful" }` |
-| `GET` | `/api/users/profile` | Get authenticated user info | ✅ | — | `{ user: {...} }` |
-| `POST` | `/api/users/logout` | Logout current session | ✅ | — | `{ msg: "Logout successful" }` |
+| Method | Endpoint | Description | Request Body | Response |
+|--------|-----------|-------------|---------------|-----------|
+| `POST` | `/api/users/register` | Register a new user | `{ name, email, password }` | `{ user }` |
+| `POST` | `/api/users/login` | Login with email and password | `{ email, password }` | `{ msg: "Login successful" }` |
+| `GET` | `/api/users/profile` | Get authenticated user info | — | `{ user: {...} }` |
+| `POST` | `/api/users/logout` | Logout current session | — | `{ msg: "Logout successful" }` |
 
 ---
 
@@ -115,3 +115,4 @@ Expense-Tracker-API/
 - Error handling is performed per-route using consistent response structures.
 - The app supports query-based filtering for dynamic reports.
 - Uses standard Express middleware pattern for modularity.
+
