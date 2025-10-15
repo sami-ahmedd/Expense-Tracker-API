@@ -67,8 +67,8 @@ Expense-Tracker-API/
 
 | Model | File | Fields |
 |-------|------|--------|
-| **User** | [models/users.js](src/models/users.js) | `name`, `email`, `password`, `createdAt` |
-| **Expense** | [models/expenseModel.js](src/models/expenseModel.js) | `title`, `amount`, `category`, `date`, `user_id` |
+| **User** | [models/users.js](src/models/users.js) | `name`, `email`, `password` |
+| **Expense** | [models/expenseModel.js](src/models/expenseModel.js) | `expenseName`, `amount`, `category`, `date`, `user_id` |
 
 ---
 
@@ -78,7 +78,7 @@ Expense-Tracker-API/
 
 | Method | Endpoint | Description | Auth | Request Body | Response |
 |--------|-----------|--------------|------|---------------|-----------|
-| `POST` | `/api/expenses` | Create a new expense | ✅ | `{ title, amount, category, date }` | `{ expense: {...} }` |
+| `POST` | `/api/expenses` | Create a new expense | ✅ | `{ expenseName, amount, category, date }` | `{ expense: {...} }` |
 | `GET` | `/api/expenses` | Get all expenses or filtered by date | ✅ | `?filter=last-week` / `last-month` / `last-3-months` | `{ allExpenses: [...] }` |
 | `PUT` | `/api/expenses/:id` | Update an expense | ✅ | Partial expense object | `{ expense: {...} }` |
 | `DELETE` | `/api/expenses/:id` | Delete an expense | ✅ | — | `{ msg: "Deleted successfully" }` |
