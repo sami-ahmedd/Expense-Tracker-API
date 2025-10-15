@@ -9,6 +9,7 @@ const createExpense = async (request,response) => {
     if (!errors.isEmpty())
         return response.status(400).send({msg :errors.array()[0].msg})
     try {
+        request.body.user_id = request.user._id ;
         const expense = await expenseModel.create(request.body);
         response.status(200).send({expense})
     } catch (error) {
@@ -16,14 +17,14 @@ const createExpense = async (request,response) => {
     }
 }
 
-//@desc get all expenses
+//@desc get expenses
 //@route GET /api/expenses
 const getExpenses = async (request,response) => {
 
     try {
         const {query : {filter}} = request ;
         if(!filter){
-        const allExpenses = await expenseModel.find()
+        const allExpenses = await expenseModel.find({user_id : request.user.id})
         return response.status(200).send({allExpenses})
         }
     
@@ -67,36 +68,49 @@ const getExpenses = async (request,response) => {
 
 //@desc update expense with id
 //@route PATCH /api/expenses/:id
-const updateExpense = async (request,response) => {
-    const {body , params : {id}} = request;
-    const errors = validationResult(request)
-    if (!errors.isEmpty())
-        return response.status(400).send({msg :errors.array()[0].msg})
-    try {
-        const findExpense = await expenseModel.findByIdAndUpdate(id,body)
-        if(!findExpense){
-            return response.status(404).send({msg: `no task with id ${id}`})
-        }
-        response.status(200).send({findExpense})
-    } catch (error) {
-        response.status(500).send({msg: error})
+const updateExpense = async (req, res) => {
+    const { body, params: { id } } = req;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send({ msg: errors.array()[0].msg });
     }
 
-}
+    try {
+        const updatedExpense = await expenseModel.findOneAndUpdate(
+            { _id: id, user_id: req.user._id }, 
+            body,
+            { new: true } // return the updated document
+        );
+
+        if (!updatedExpense) {
+            return res.status(404).send({ msg: 'Expense not found or you do not have permission' });
+        }
+
+        res.status(200).send({ msg: 'Expense updated', updatedExpense });
+    } catch (error) {
+        res.status(500).send({ msg: error.message });
+    }
+};
+
 
 //@desc update expense with id
 //@route PATCH /api/expenses/:id
-const deleteExpense =  async (request,response) => {
+const deleteExpense = async (req, res) => {
     try {
-        const {params : {id}} = request;
-        const deletedExpense = await expenseModel.findByIdAndDelete(id);
-        if(!deletedExpense){
-            return response.status(404).send({msg: `no task with id ${id}`})
+        const { params: { id } } = req;
+        const deletedExpense = await expenseModel.findOneAndDelete({
+            _id: id,
+            user_id: req.user._id
+        });
+
+        if (!deletedExpense) {
+            return res.status(404).send({ msg: `Expense not found or not yours` });
         }
-        response.status(200).send({deletedExpense})
+
+        res.status(200).send({ msg: 'Expense deleted', deletedExpense });
     } catch (error) {
-        response.status(500).send({msg: error})
+        res.status(500).send({ msg: error.message });
     }
-}
+};
 
 module.exports = {getExpenses , updateExpense , createExpense , deleteExpense};

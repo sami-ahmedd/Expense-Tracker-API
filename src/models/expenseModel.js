@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
-const {CATEGORIES} = require('../constants/categories')
+const {CATEGORIES} = require('../constants/categories');
+const { request } = require('express');
 
 const expenseSchema = new mongoose.Schema({
+    user_id : {
+        type : mongoose.Schema.Types.ObjectId , 
+        required : true,
+        ref : 'userModel'
+    },
     expenseName : {
         type : String, 
         required : [true, 'must provide expense name'] ,
