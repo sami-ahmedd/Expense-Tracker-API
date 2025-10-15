@@ -57,6 +57,7 @@ const getExpenses = async (request,response) => {
 
     if (startDate) {
     const expenses = await expenseModel.find({
+        user_id: request.user._id,
         date: { $gte: startDate },
     });
     return response.status(200).send(expenses);
