@@ -8,7 +8,8 @@ Data is persisted via MongoDB using Mongoose models.
 
 ## 🧩 Features
 
-- User registration and authentication (JWT-based)
+- User registration and authentication (Passport Local)
+- Persistent login sessions via `express-session`
 - Create, update, and delete expense records
 - Retrieve expenses with date-based filters (e.g., last week, month, 3 months)
 - Secure request validation and error handling
@@ -30,7 +31,7 @@ npm install
 
 # 4. Configure environment variables
 cp .env.example .env
-# Set MongoDB URI, JWT secret, and other variables
+# Set MongoDB URI, session secret, and other variables
 
 # 5. Start the server
 npm run dev
@@ -86,9 +87,10 @@ Expense-Tracker-API/
 
 | Method | Endpoint | Description | Auth | Request Body | Response |
 |--------|-----------|-------------|------|---------------|-----------|
-| `POST` | `/api/users/register` | Register a new user | ❌ | `{ name, email, password }` | `{ user, token }` |
-| `POST` | `/api/users/login` | Authenticate and receive JWT | ❌ | `{ email, password }` | `{ token }` |
-| `GET` | `/api/users/profile` | Get user info | ✅ | — | `{ user: {...} }` |
+| `POST` | `/api/users/register` | Register a new user | ❌ | `{ name, email, password }` | `{ user }` |
+| `POST` | `/api/users/login` | Login with email and password | ❌ | `{ email, password }` | `{ msg: "Login successful" }` |
+| `GET` | `/api/users/profile` | Get authenticated user info | ✅ | — | `{ user: {...} }` |
+| `POST` | `/api/users/logout` | Logout current session | ✅ | — | `{ msg: "Logout successful" }` |
 
 ---
 
@@ -96,17 +98,19 @@ Expense-Tracker-API/
 
 | Library | Purpose |
 |----------|----------|
+| **passport** | Authentication middleware |
+| **passport-local** | Local username/password strategy |
+| **express-session** | Persistent session management |
 | **express-validator** | Request validation middleware |
 | **bcrypt** | Password hashing |
-| **jsonwebtoken (JWT)** | Secure authentication |
 | **mongoose** | MongoDB ORM |
-| **dotenv** | Environment management |
-| **express-session** | Session management (optional for persistent login) |
+| **dotenv** | Environment configuration |
 
 ---
 
 ## 🧰 Development Notes
 
+- Authentication uses **Passport.js Local Strategy** with session storage.
 - Input validation is centralized in the controllers.
 - Error handling is performed per-route using consistent response structures.
 - The app supports query-based filtering for dynamic reports.
