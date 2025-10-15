@@ -9,7 +9,7 @@ passport.serializeUser((user , done) =>{
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const findUser = userModel.findById(id);
+        const findUser =await userModel.findById(id);
         if(!findUser) throw new Error('user not found');
         done(null,findUser)
     } catch (error) {
